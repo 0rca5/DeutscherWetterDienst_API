@@ -19,6 +19,15 @@ class DWDQuery(ObjectType):
                              lon = Argument(String,required = True),
                              lat = Argument(String, required = True))
 
+    hoehendaten = Field(List(MeldungType),
+                       meldungId=Argument(ID, required=False),
+                       place=Argument(String, required=False),
+                       lon=Argument(String, required=False),
+                       lat=Argument(String, required=False),
+                       category=Argument(String, required=False),
+                       auspraegung=Argument(String, required=False),
+                       location=Argument(LocationType, required=False))
+
     def resolve_warnungen(root, info, meldungId = None, place=None, lon=None, lat=None, category=None, auspraegung=None, location=None):
         """
         hilft, Abfragen zu beantworten, indem Daten für das Feld warnungen abgerufen werden.
@@ -37,7 +46,7 @@ class DWDQuery(ObjectType):
 
         query = {}
         if meldungId:
-            query["meldungId"] = meldungId
+           query["meldungId"] = meldungId
         if place:
             query["place"] = place
         if lon:
@@ -51,7 +60,7 @@ class DWDQuery(ObjectType):
         if location:
             query["location"] = location
 
-        meldungs_result = serv.find_warning("crowd_meldungen",query)
+        meldungs_result = serv.find_warning("crowd_meldungen", query)
         meldungsliste = list(meldungs_result)
 
         return meldungsliste
@@ -71,5 +80,29 @@ class DWDQuery(ObjectType):
         lokale_meldungen = serv.find_nearest_warning("crowd_meldungen",float(lon),float(lat))
 
         meldungsliste = list(lokale_meldungen)
+
+        return meldungsliste
+
+    def resolve_hoehendaten(root, info,meldungId = None, place=None, lon=None, lat=None, category=None, auspraegung=None, location = None):
+        serv = WetterdienstService.instance()
+
+        query = {}
+        if meldungId:
+            query["meldungId"] = meldungId
+        if place:
+            query["place"] = place
+        if lon:
+            query["lon"] = lon
+        if lat:
+            query["lat"] = lat
+        if category:
+            query["category"] = category
+        if auspraegung:
+            query["auspraegung"] = auspraegung
+        if location:
+            query["location"] = location
+
+        meldungs_result = serv.find_warning("crowd_meldungen", query)
+        meldungsliste = list(meldungs_result)
 
         return meldungsliste
