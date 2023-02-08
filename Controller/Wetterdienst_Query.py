@@ -22,7 +22,6 @@ class DWDQuery(ObjectType):
     def resolve_warnungen(root, info, meldungId = None, place=None, lon=None, lat=None, category=None, auspraegung=None, location=None):
         """
         hilft, Abfragen zu beantworten, indem Daten für das Feld warnungen abgerufen werden.
-        ruft intern die find_warning() der WetterdienstService-Klasse auf.
 
         :param info:
         :param meldungId (ID): ID der Meldung

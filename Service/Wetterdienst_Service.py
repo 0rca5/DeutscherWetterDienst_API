@@ -42,7 +42,6 @@ class WetterdienstService():
         """
         Gibt eine limitierte Liste an documents aus einer collection aus,
         die sich in der Nähe des übergebenen Längen- und Breitengrad befinden.
-        Ruft intern die find_documents() der WetterdienstPersistence-Klasse auf.
 
         :param collection_name: (String) Name der collection
         :param lon: (Int, Float oder String) Längengrad
@@ -56,8 +55,7 @@ class WetterdienstService():
 
     def find_warning(cls, collection_name, query):
         """
-        Gibt eine Liste an documents aus einer collection aus, die der Anfrage entsprechen,
-        indem sie die find_documents() der WetterdienstPersistence-Klasse aufruft.
+        Gibt eine Liste an documents aus einer collection aus, die der Anfrage entsprechen.
 
         :param collection_name: (String) Name der collection
         :param query: (dict) Anfrage an die collection
@@ -65,7 +63,7 @@ class WetterdienstService():
         """
         return cls._persistence.find_documents(collection_name, query)
 
-    def get_json_data(self, url):
+    def get_json_data(self, url, field_specifier = None):
         """
         Gibt ein JSON (dict) zurück, indem es die als Argument übergebene URL anfragt.
 
@@ -74,12 +72,15 @@ class WetterdienstService():
         """
         response = requests.get(url)
         data = json.loads(response.content)
-        return data["meldungen"]
+
+        if field_specifier:
+            return data[field_specifier]
+        else:
+            return data
 
     def insert_json_data_into_db(cls, collection_name, json_data, dup_field, index_specifier = pymongo.ASCENDING):
         """
         Fügt eine Liste an dictionaries/JSON-Objekten einer collection hinzu und verhindert die Duplikation von documents.
-        Ruft intern die create_index() und insert_many() der WetterdienstPersistence-Klasse auf.
 
         :param collection_name: (String) Name der collection
         :param json_data: (list) Liste an dictionaries/JSON
@@ -99,7 +100,6 @@ class WetterdienstService():
     def create_index(cls, collection_name, index_field, index_specifier = pymongo.ASCENDING):
         """
         Setzt ein bestimmtes Feld in einer collection als Index.
-        Ruft intern die create_index() der WetterdienstPersistence-Klasse auf.
 
         :param collection_name: (String) Name der collection
         :param index_field: (String) Name des Feldes
@@ -113,7 +113,6 @@ class WetterdienstService():
     def update_one(cls, collection_name, document, query):
         """
         Passt ein document in einer collection nach den Anforderungen in der Anfrage an.
-        Ruft intern die update_one() der WetterdienstPersistence-Klasse auf.
 
         :param collection_name: (String) Name der collection
         :param document: (dict) Das anzupassende document
@@ -123,15 +122,20 @@ class WetterdienstService():
         cls._persistence.update_one(collection_name, document, query)
         return
 
+    def insert_document(cls, collection_name, document):
+        """
+
+        :param collection_name: (String) Name der collection
+        :param document: Zu erstellendes document in der Form {"feld_name" : Wert, "feld_name2": Wert2}
+        :return:
+        """
+        cls._persistence.insert_document(collection_name, document)
+        return
+
     def create_new_geoindex(cls, collection_name, geo_field_name="location", index_specifier=pymongo.GEOSPHERE):
 
         """
         Setzt ein location-Feld in einer collection als GEO-Index.
-        Überprüft mithilfe der find_documents() der WetterdienstPersistence-Klasse zunächst,
-        ob sich documents in der collection befinden, die noch kein location-Feld haben
-        und passt diese entsprechend mit der update_one() der WetterdienstPersistence-Klasse an.
-        Anschließend wird durch Aufruf der create_index() der WetterdienstPersistence-Klasse das location Feld als
-        GEOSPHERE-Index gesetzt.
 
         :param collection_name: (String) Name der Collection
         :param geo_field_name:(String) Name des Feldes, das als GEO-Index deklariert werden soll. Standard: "location"

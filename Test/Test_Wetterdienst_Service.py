@@ -40,7 +40,8 @@ class TestWetterdienstService(unittest.TestCase):
 
     @responses.activate
     def test_get_json_data_returns_json(self):
-        """Testet, ob die get_json_data() ein JSON-Objekt zurückgibt.
+        """
+        Testet, ob die get_json_data() ein JSON-Objekt zurückgibt.
         Wirft einen AssertionError, wenn der Test nicht bestanden ist.
 
         """
@@ -144,10 +145,11 @@ class TestWetterdienstService(unittest.TestCase):
         :param mock_create_index: Mockt die create_index() der WetterdienstPersistence-Klasse
         """
         collection_name = "collection"
-        indexList = [("location", pymongo.ASCENDING)]
+        geo_field_name = "field_name"
+        index_specifier = pymongo.ASCENDING
 
-        self.serv.create_index(collection_name,indexList)
-        mock_create_index.assert_called_with(collection_name,indexList)
+        self.serv.create_index(collection_name, geo_field_name, index_specifier)
+        mock_create_index.assert_called_with(collection_name, [(geo_field_name, index_specifier)])
 
     @patch('Persistence.Wetterdienst_Persistence.WetterdienstPersistence.find_documents')
     def test_create_new_geo_index_calls_find_documents_from_persistence(self,mock_find_documents):
@@ -158,10 +160,11 @@ class TestWetterdienstService(unittest.TestCase):
         :param mock_find_documents: Mockt die find_documents() der WetterdienstPersistence-Klasse
         """
         collection_name = "collection"
-        indexList = [("field_name", "order")]
-        query = {"location": {"$exists": bool()}}
+        geo_field_name = "field_name"
+        index_specifier = pymongo.ASCENDING
+        query = {geo_field_name: {"$exists": bool()}}
 
-        self.serv.create_new_geoindex(collection_name, indexList)
+        self.serv.create_new_geoindex(collection_name, geo_field_name, index_specifier)
         mock_find_documents.assert_called_with(collection_name, query)
 
     @patch('Persistence.Wetterdienst_Persistence.WetterdienstPersistence.create_index')
@@ -173,10 +176,11 @@ class TestWetterdienstService(unittest.TestCase):
         :param mock_create_index: Mockt die create_index() der WetterdienstPersistence-Klasse
         """
         collection_name = "collection"
-        indexList = [("field_name", "order")]
+        geo_field_name = "field_name"
+        index_specifier = pymongo.ASCENDING
 
-        self.serv.create_new_geoindex(collection_name, indexList)
-        mock_create_index.assert_called_with(collection_name, indexList)
+        self.serv.create_new_geoindex(collection_name, geo_field_name, index_specifier)
+        mock_create_index.assert_called_with(collection_name, [(geo_field_name, index_specifier)])
 
 
 if __name__ == "__main__":
