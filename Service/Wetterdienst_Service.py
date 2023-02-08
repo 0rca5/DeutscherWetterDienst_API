@@ -150,12 +150,12 @@ class WetterdienstService():
             for x in cls._persistence.find_documents(collection_name, query):
                 lon = x["lon"]
                 lat = x["lat"]
-                cls.update_one(collection_name, x, {"$set": {geo_field_name: {"lon": float(lon), "lat": float(lat), }}})
+                cls.update_one(collection_name, x, {"$set": {geo_field_name: {"lon": float(lon), "lat": float(lat) }}})
 
-        try:
-            cls._persistence.create_index(collection_name, [(geo_field_name, index_specifier)])
-
-        except OperationFailure:
-            print("Diesen GEO-Index gibt es bereits")
+        #try:
+    #        cls._persistence.create_index(collection_name, [(geo_field_name, index_specifier)])
+#
+ #       except OperationFailure:
+  #          print("Diesen GEO-Index gibt es bereits")
 
         return
