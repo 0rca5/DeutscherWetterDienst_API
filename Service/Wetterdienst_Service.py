@@ -6,7 +6,8 @@ from Persistence.Wetterdienst_Persistence import WetterdienstPersistence
 
 class WetterdienstService():
 
-    """Eine Klasse die einen Wetterdienst-Service repräsentiert
+    """
+    Eine Klasse die einen Wetterdienst-Service repräsentiert
 
     Methoden:
     instance()
@@ -122,24 +123,13 @@ class WetterdienstService():
         cls._persistence.update_one(collection_name, document, query)
         return
 
-    def insert_document(cls, collection_name, document):
-        """
-
-        :param collection_name: (String) Name der collection
-        :param document: Zu erstellendes document in der Form {"feld_name" : Wert, "feld_name2": Wert2}
-        :return:
-        """
-        cls._persistence.insert_document(collection_name, document)
-        return
-
-    def create_new_geoindex(cls, collection_name, geo_field_name="location", index_specifier=pymongo.GEOSPHERE):
+    def create_new_geofield(cls, collection_name, geo_field_name="location"):
 
         """
-        Setzt ein location-Feld in einer collection als GEO-Index.
+        Setzt ein location-Feld in einer collection.
 
         :param collection_name: (String) Name der Collection
         :param geo_field_name:(String) Name des Feldes, das als GEO-Index deklariert werden soll. Standard: "location"
-        :param index_specifier: (pymongo collection level utility) Art des GEO-Index. Standard: pymongo.GEOSPHERE
         :return: None
         """
 
@@ -151,11 +141,5 @@ class WetterdienstService():
                 lon = x["lon"]
                 lat = x["lat"]
                 cls.update_one(collection_name, x, {"$set": {geo_field_name: {"lon": float(lon), "lat": float(lat) }}})
-
-        #try:
-    #        cls._persistence.create_index(collection_name, [(geo_field_name, index_specifier)])
-#
- #       except OperationFailure:
-  #          print("Diesen GEO-Index gibt es bereits")
 
         return

@@ -46,7 +46,7 @@ class TestWetterdienstService(unittest.TestCase):
 
         """
         responses.get(url = "http://url.com",
-                      json = {"meldungen": {"key":"value"}},
+                      json = {"key":"value"},
                       status = 200)
 
         self.assertEqual(WetterdienstService.instance().get_json_data("http://url.com"), {"key":"value"})
@@ -152,7 +152,7 @@ class TestWetterdienstService(unittest.TestCase):
         mock_create_index.assert_called_with(collection_name, [(geo_field_name, index_specifier)])
 
     @patch('Persistence.Wetterdienst_Persistence.WetterdienstPersistence.find_documents')
-    def test_create_new_geo_index_calls_find_documents_from_persistence(self,mock_find_documents):
+    def test_create_new_geo_field_calls_find_documents_from_persistence(self,mock_find_documents):
         """
         Testet, ob die create_new_geo_index() die find_documents() der WetterdienstPersistence-Klasse aufruft.
         Wirft einen AssertionError, wenn der Test nicht bestanden ist.
@@ -167,20 +167,7 @@ class TestWetterdienstService(unittest.TestCase):
         self.serv.create_new_geoindex(collection_name, geo_field_name, index_specifier)
         mock_find_documents.assert_called_with(collection_name, query)
 
-    @patch('Persistence.Wetterdienst_Persistence.WetterdienstPersistence.create_index')
-    def test_create_new_geo_index_calls_create_index_from_persistence(self, mock_create_index):
-        """
-        Testet, ob die create_new_geo_index() die create_index() der WetterdienstPersistence-Klasse aufruft.
-        Wirft einen AssertionError, wenn der Test nicht bestanden ist.
 
-        :param mock_create_index: Mockt die create_index() der WetterdienstPersistence-Klasse
-        """
-        collection_name = "collection"
-        geo_field_name = "field_name"
-        index_specifier = pymongo.ASCENDING
-
-        self.serv.create_new_geoindex(collection_name, geo_field_name, index_specifier)
-        mock_create_index.assert_called_with(collection_name, [(geo_field_name, index_specifier)])
 
 
 if __name__ == "__main__":

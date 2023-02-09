@@ -77,7 +77,7 @@ class DWDQuery(ObjectType):
 
         serv = WetterdienstService.instance()
 
-        lokale_meldungen = serv.find_nearest_warning("crowd_meldungen",float(lon),float(lat))
+        lokale_meldungen = serv.find_nearest_warning("crowd_meldungen", float(lon), float(lat))
 
         meldungsliste = list(lokale_meldungen)
 

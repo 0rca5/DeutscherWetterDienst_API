@@ -41,9 +41,6 @@ def request_height():
     return jsonify({"heights": geo_data_list})
 
 
-
-
-
 def run_app():
     app.run()
 
@@ -52,13 +49,13 @@ if __name__ == "__main__":
     #Service Instanz
     serv = WetterdienstService.instance()
 
-    serv.create_new_geoindex("crowd_meldungen", "location", pymongo.GEOSPHERE)
-    serv.create_new_geoindex("geo_daten", "location", pymongo.GEOSPHERE)
+    serv.create_new_geofield("crowd_meldungen", "location", pymongo.GEOSPHERE)
+    serv.create_new_geofield("geo_daten", "location", pymongo.GEOSPHERE)
 
     t = threading.Thread(target=run_app)
     t.start()
 
-    #Abfragen der DWD-API und einfügen in die collection jede Minute
+    #Abfragen der DWD-API und einfügen in die collection in einem bestimten Zeitintervall
     while True:
         json_data = serv.get_json_data(
             "https://s3.eu-central-1.amazonaws.com/app-prod-static.warnwetter.de/v16/crowd_meldungen_overview_v2.json",field_specifier = "meldungen")
