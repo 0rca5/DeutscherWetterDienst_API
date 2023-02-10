@@ -2,11 +2,10 @@ import pymongo
 from flask import request, jsonify
 from flask import Flask
 from graphene import Schema
-from Controller.Wetterdienst_Query import DWDQuery
-from Service.Wetterdienst_Service import WetterdienstService
+from graphqlAPI.modules.Wetterdienst_Query import DWDQuery
+from graphqlAPI.modules.Wetterdienst_Service import WetterdienstService
 import time
 import threading
-from time import sleep
 
 app = Flask(__name__)
 

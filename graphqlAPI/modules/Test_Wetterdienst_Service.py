@@ -2,7 +2,7 @@ import unittest
 import pymongo
 import responses
 from unittest.mock import patch
-from Service.Wetterdienst_Service import WetterdienstService
+from graphqlAPI.modules.Wetterdienst_Service import WetterdienstService
 
 
 class TestWetterdienstService(unittest.TestCase):

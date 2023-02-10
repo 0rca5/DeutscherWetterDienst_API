@@ -1,8 +1,7 @@
 import pymongo
 import requests
 import json
-from pymongo.errors import OperationFailure
-from Persistence.Wetterdienst_Persistence import WetterdienstPersistence
+from graphqlAPI.modules.Wetterdienst_Persistence import WetterdienstPersistence
 
 class WetterdienstService():
 

@@ -1,8 +1,6 @@
 import unittest
-import pymongo
-import responses
 from unittest.mock import patch
-from Controller.Wetterdienst_Query import DWDQuery
+from graphqlAPI.modules.Wetterdienst_Query import DWDQuery
 
 
 class TestDWDQuery(unittest.TestCase):
