@@ -1,6 +1,6 @@
 from graphene import ObjectType, Argument, String, ID, Field, List
 from graphqlAPI.modules.Model import MeldungType, LocationType
-from graphqlAPI.modules.Wetterdienst_Service import WetterdienstService
+from graphqlAPI.modules.Service import WetterdienstService
 
 
 class DWDQuery(ObjectType):

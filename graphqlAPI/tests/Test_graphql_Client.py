@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from graphqlAPI.modules.Wetterdienst_Query import DWDQuery
+from graphqlAPI.modules.graphql_Client import DWDQuery
 
 
 class TestDWDQuery(unittest.TestCase):

@@ -1,7 +1,7 @@
 import pymongo
 import requests
 import json
-from graphqlAPI.modules.Wetterdienst_Persistence import WetterdienstPersistence
+from Persistence import WetterdienstPersistence
 
 class WetterdienstService():
 
